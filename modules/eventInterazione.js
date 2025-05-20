@@ -293,9 +293,39 @@ export function enableAlgorithmButtons() {
     });
 }
 
+const showErrorModal = (message) => {
+    const errorModal = document.getElementById('errorModal');
+    const errorMessage = document.getElementById('errorMessage');
+    const closeButton = errorModal.querySelector('.close-modal');
+    const okButton = document.getElementById('errorOkButton');
+    
+    errorMessage.textContent = message;
+    errorModal.classList.add('active');
+    
+    const closeModal = () => {
+        errorModal.classList.remove('active');
+        enableAlgorithmButtons();
+        document.getElementById('resetAnimation').disabled = false;
+    };
+    
+    closeButton.onclick = closeModal;
+    okButton.onclick = closeModal;
+    errorModal.onclick = (e) => {
+        if (e.target === errorModal) closeModal();
+    };
+};
 
+const checkStartNode = () => {
+    const startNode = document.getElementById("startNode").value;
+    if (!startNode) {
+        showErrorModal('Seleziona un nodo di partenza prima di eseguire l\'algoritmo.');
+        return false;
+    }
+    return true;
+};
 
 const DfsHandler = () => {
+    if (!checkStartNode()) return;
     const cy = getCy();
     let start = cy.getElementById(document.getElementById("startNode").value);
     document.getElementById('resetAnimation').removeEventListener('click', resExpl);
@@ -307,6 +337,7 @@ const DfsHandler = () => {
 }
 
 const BfsHandler = () => {
+    if (!checkStartNode()) return;
     const cy = getCy();
     let start = cy.getElementById(document.getElementById("startNode").value);
     document.getElementById('resetAnimation').removeEventListener('click', resExpl);
@@ -317,14 +348,18 @@ const BfsHandler = () => {
 }
 
 const TopSortHandler = () => {
+    if (!checkStartNode()) return;
+    const cy = getCy();
+    let start = cy.getElementById(document.getElementById("startNode").value);
     document.getElementById('resetAnimation').removeEventListener('click', resExpl);
     document.getElementById('resetAnimation').disabled = true;
     document.getElementById('statusBar').textContent = "Topological Sort in corso";
     disableAlgorithmButtons('topSort');
-    topSort();
+    topSort(start);
 }
 
 const DijkstraHandler = () => {
+    if (!checkStartNode()) return;
     const cy = getCy();
     let start = cy.getElementById(document.getElementById("startNode").value);
     document.getElementById('resetAnimation').removeEventListener('click', resExpl);
@@ -335,6 +370,7 @@ const DijkstraHandler = () => {
 }
 
 const PrimHandler = () => {
+    if (!checkStartNode()) return;
     const cy = getCy();
     let start = cy.getElementById(document.getElementById("startNode").value);
     document.getElementById('resetAnimation').removeEventListener('click', resExpl);
