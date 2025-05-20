@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <title>GraphFlow</title>
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h1>Graph<span class="highlight">Flow</span></h1>
+                </div>
+                
+                <!-- Creazione Grafi -->
+                <div class="section">
+                    <h2>Graph</h2>
+                    <div class="controls">
+                        <button id="addNode" class="glow-button">
+                            Add Nodes: OFF
+                        </button>
+                        <button id="addEdge" class="glow-button">
+                            Add Edges: OFF
+                        </button>
+                        <button id="clear" class="glow-button warning">
+                            Clear
+                        </button>  
+                    </div>
+                </div>
+
+                <!-- Random Graph -->
+                <div class="section">
+                    <h2>Random Graph</h2>
+                    <div class="random-graph">
+                        <div class="input-group">
+                            <label for="nodeCount">Nodes Number:</label>
+                            <input type="number" id="nodeCount" min="1" max="25" value="10">
+                        </div>
+                        <div class="input-group">
+                            <label for="edgeProbability">Edge Probability:</label>
+                            <input type="range" id="edgeProbability" min="0" max="100" value="30">
+                            <span id="probabilityValue">30%</span>
+                        </div>
+                        <div class="switch-container" style="display: flex; gap: 50px;">
+                            <div class="input-group" style="margin-left: 25px;">
+                                <label class="switch">
+                                    <input type="checkbox" id="unitWeights" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="switch-label">Unit Weights</span>
+                            </div>
+                            
+                            <div class="input-group">
+                                    <label class="switch" >
+                                        <input type="checkbox" id="switchDirUndir" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="switch-text">Directed</span>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        <button id="generateRandom" class="glow-button">
+                            Generate Random Graph
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Algorithms -->
+                <div class="section">
+                    <h2>Algorithms</h2>
+                    <div class="algorithms">
+                        <div class="input-group">
+                            <label for="startNode">Start Node:</label>
+                            <select id="startNode">
+                                <option value="">Select a node</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="algorithmSpeed">Algorithm Speed:</label>
+                            <input type="range" id="algorithmSpeed" min="1" max="10" value="5">
+                            <span id="speedValue">5x</span>
+                        </div>
+                        <div class="controls">
+                            <button id="dfs" class="glow-button">
+                                DFS
+                            </button>
+                            <button id="bfs" class="glow-button">
+                                BFS
+                            </button>
+                            <button id="dijkstra" class="glow-button">
+                                Dijkstra
+                            </button>
+                            <button id="topSort" class="glow-button">
+                                Topological Sort
+                            </button>
+                            <button id="prim" class="glow-button">
+                                Prim
+                            </button> 
+                            <div class="button-container">
+                                <button id="resetAnimation" class="glow-button warning">Reset Animation</button>
+                                <button id="stopAlgorithm" class="glow-button warning">Stop</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Graphs -->
+                <div class="section" id="savedGraphsSection" style="display: none;">
+                    <h2>Saved Graphs</h2>
+                    <div class="saved-graphs">
+                        <div class="input-group">
+                            <label for="graphName">Graph Name:</label>
+                            <input type="text" id="graphName" placeholder="Enter graph name">
+                        </div>
+                        <button id="saveGraph" class="glow-button">
+                            Save Current Graph
+                        </button>
+                        <div class="graphs-list" id="graphsList">
+                            <!-- Lista dei grafi salvati verrà popolata dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <!--<div class="algorithm-status">
+                    <p id="status">Status</p>
+                </div>-->
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="mobile-title">
+                    <h1>Graph<span class="highlight">Flow</span></h1>
+                </div>
+                <div class="menu-button" id="menuButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </div>
+                <div class="user-menu-container">
+                    <div class="user-icon" id="userIcon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-item" id="loginBtn">Login</div>
+                        <div class="dropdown-item" id="registerBtn">Register</div>
+                        <div class="dropdown-item" id="logoutBtn" style="display: none;">Logout</div>
+                    </div>
+                </div>
+                <div class="graph-wrapper">
+                   
+                    <div id="graph-container" style="width: 100%; height: 100vh;">
+                        <!-- Qui viene visualizzato il grafo -->
+                       
+                    </div>
+                    <div id="statusBar" class="status-bar">Ready</div>
+                    <div class="zoom-controls">
+                        <div class="zoom-buttons">
+                            <button class="zoom-button" id="zoomIn">+</button>
+                            <button class="zoom-button" id="zoomOut">-</button>
+                            <button class="reset-button" id="resetZoom">↺</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Properties Panel (ovvero la finestra pop-up per modificare nodi/archi)-->
+                    <div id="sort" class="properties-panel">
+                        <h3 id="sortTitle">Topological Sort</h3>
+                        <div id="sortCycle" style="display: none;"></div>
+                        <div style="font-size: 20px;">
+                            Nel grafo inserito c'è un ciclo. Quindi il grafo non è
+                            un DAG. L'arco che chiude il ciclo è <div style="font-size: 20px;" id="arco"></div>
+                            <button id="removeEdge2" class="remove-button" style="width: 100%; margin-top: 10px;">Remove</button>
+                        </div>
+                    </div>
+                    <div id="propertiesPanel" class="properties-panel">
+                        <h3 id="propertiesTitle">Properties</h3>
+                        <div id="nodeProperties" style="display: none;">  <!--nasconde la finestra di modifica dei nodi-->
+                            <div class="input-group">
+                                <label for="nodeLabel">Node Label:</label>
+                                <input type="text" id="nodeLabel" placeholder="Enter node label">
+                            </div>
+                            <button id="closePropertiesNodes" class="glow-button" style="width: 100%; margin-top: 10px;">OK</button>
+                            <button id="removeNode" class="remove-button" style="width: 100%; margin-top: 10px;">Remove</button>
+                        </div>
+                        <div id="edgeProperties" style="display: none;"> <!--nasconde la finestra di modifica degli archi-->
+                            <div class="input-group">
+                                <label for="edgeWeight">Edge Weight:</label>
+                                <input type="number" id="edgeWeight" min="1" value="1"> <!--imposto di default il peso a 1-->
+                            </div>
+                            <div class="switch-container">
+                                <label class="switch">
+                                    <input type="checkbox" id="directedSwitch">
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="switch-label">Directed</span>
+
+                            </div>
+                            <button id="closePropertiesEdges" class="glow-button" style="width: 100%; margin-top: 10px;">OK</button>
+                            <button id="removeEdge" class="remove-button" style="width: 100%; margin-top: 10px;">Remove</button>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- <script src="script.js"></script> -->
+   <script type="module" src="./modules/main.js"></script>
+
+   <div class="welcome-modal" id="welcomeModal">
+       <div class="welcome-content">
+           <h2>Benvenuto su Graph<span class="highlight">Flow</span>!</h2>
+           <p>GraphFlow è uno strumento interattivo per la visualizzazione e la simulazione di algoritmi sui grafi che ti aiuta a comprendere e sperimentare con gli algoritmi in modo visivo.</p>
+           
+           <ul class="feature-list">
+               <li>Crea e personalizza i tuoi grafi</li>
+               <li>Genera grafi casuali con parametri personalizzabili</li>
+               <li>Visualizza gli algoritmi classici sui grafi in azione</li>
+               <li>Salva e carica le tue creazioni</li>
+           </ul>
+
+           <p>Inizia esplorando le opzioni nella barra laterale o genera un grafo casuale per vedere come funziona!</p>
+           
+           <button class="start-button" id="startButton">Iniziamo!</button>
+       </div>
+   </div>
+
+   <div class="modal" id="infoSavedGraph">
+    <div class="modal-content">
+        <div id ="headerInfoGraph" class="modal-header">
+            <h2 id="modalTitle">Error</h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            
+                <div id="msgInfoGraph"></div>
+                <button type="submit" class="glow-button" id="okButton">ok</button>
+                
+            
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="confirmDeleteGraph">
+    <div class="modal-content">
+        <div id ="headerDeleteGraph" class="modal-header">
+            <h2 id="modalTitle">Warning</h2>
+        </div>
+        <div class="modal-body">
+            
+                <div id="msgInfoGraph">Sei sicuro di voler eliminare questo grafo?</div>
+                <button type="submit" class="glow-button" id="okconfirmButton">ok</button>
+                <button type="submit" class="glow-button" id="cancelButton">cancel</button>
+
+            
+        </div>
+    </div>
+</div>
+   
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required placeholder="Enter your username">
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="glow-button">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Register</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="input-group">
+                        <label for="regUsername">Username</label>
+                        <input type="text" id="regUsername" name="username" required placeholder="Choose a username">
+                    </div>
+                    <div class="input-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" name="email" required placeholder="Enter your email">
+                    </div>
+                    <div class="input-group">
+                        <label for="regPassword">Password</label>
+                        <input type="password" id="regPassword" name="password" required placeholder="Choose a password">
+                    </div>
+                    <div class="input-group">
+                        <label for="regConfirmPassword">Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                    </div>
+                    <button type="submit" class="glow-button">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Errore</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="errorMessage"></div>
+                <button type="button" class="glow-button" id="errorOkButton">OK</button>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html> 
