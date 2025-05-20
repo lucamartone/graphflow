@@ -12,14 +12,12 @@ export async function runDijkstraWithUI(start) {
   let panel = document.getElementById('dijkstra-panel');
   document.getElementById('userIcon').classList.add('hidden');
   if (!panel) {
-    
-   
     panel = document.createElement('div');
     panel.id = 'dijkstra-panel';
     panel.style.position = 'fixed';
     panel.style.top = '0';
     panel.style.right = '0';
-    panel.style.width = '250px';
+    panel.style.width = window.innerWidth <= 768 ? '100%' : '250px';
     panel.style.height = '100%';
     panel.style.background = 'var(--bg-dark)';
     panel.style.borderLeft = '2px solid var(--red-color)';
@@ -29,6 +27,25 @@ export async function runDijkstraWithUI(start) {
     panel.style.zIndex = 1000;
     panel.style.fontFamily = "'VT323', monospace";
     document.body.appendChild(panel);
+
+    // Aggiungi media query per il responsive
+    const style = document.createElement('style');
+    style.textContent = `
+      @media (max-width: 768px) {
+        #dijkstra-panel {
+          width: 100% !important;
+          padding: 10px !important;
+        }
+        #dijkstra-panel h3 {
+          font-size: 1.2rem !important;
+        }
+        #dijkstra-panel button {
+          font-size: 1rem !important;
+          padding: 6px !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
   }
 
   // Aggiungi intestazione e bottone di chiusura
@@ -63,7 +80,7 @@ export async function runDijkstraWithUI(start) {
     button.style.color = 'var(--red-color)';
     button.style.cursor = 'pointer';
     button.style.fontFamily = "'VT323', monospace";
-    button.style.fontSize = '1.1rem';
+    button.style.fontSize = window.innerWidth <= 768 ? '0.9rem' : '1.1rem';
     button.style.transition = 'all 0.3s ease';
     button.style.textTransform = 'uppercase';
     button.style.letterSpacing = '1px';
