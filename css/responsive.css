@@ -145,6 +145,30 @@
     .menu-button.not {
         display: none !important; /* forza la scomparsa se ha la classe "hidden" */
       }
+
+    /* Welcome Modal Responsive Styles */
+    .welcome-modal .welcome-content {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .welcome-modal .welcome-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .welcome-modal .welcome-content p {
+        font-size: 1.1rem;
+    }
+
+    .welcome-modal .welcome-content .feature-list li {
+        font-size: 1rem;
+    }
+
+    .welcome-modal .welcome-content .start-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+    }
 }
 
 
