@@ -1,0 +1,636 @@
+.status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 299px;
+    width: calc(100% - 300px);
+    flex: 1;
+    padding: 8px 16px;
+    background-color: #2f3640;
+    border: 2px solid var(--red-color);
+    color: #fff;
+    font-size: 20px;
+    text-align: left;
+    z-index: 100;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+
+/* Distanza verticale tra i pulsanti di controllo */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Zoom */
+.zoom-controls {
+    position: absolute;
+    bottom: 4rem;
+    right: 2rem;
+    z-index: 1000;
+}
+
+.zoom-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.zoom-button {
+    background: var(--bg-dark);
+    border: 2px solid var(--red-color);
+    color: var(--red-color);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--vintage-shadow);
+}
+
+.reset-button {
+    background: var(--bg-dark);
+    border: 2px solid var(--red-color);
+    color: var(--red-color);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--vintage-shadow);
+}
+
+/*ingrandisci e illumina pulsanti di zoom quando si passa con mouse*/
+.zoom-button:hover {
+    background: var(--red-color);
+    color: var(--bg-dark);
+    transform: scale(1.1);
+}
+
+.reset-button:hover {
+    background: var(--red-color);
+    color: var(--bg-dark);
+    transform: scale(1.1);
+}
+
+.algorithm-status {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--bg-dark);
+    border: 2px solid var(--blue-color);
+    box-shadow: var(--vintage-shadow);
+}
+
+#status {
+    color: var(--yellow-color);
+    text-shadow: var(--vintage-shadow);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* probabilità archi */
+.input-group input[type="range"] {
+    -webkit-appearance: none;  /* toglie lo stile standard del browser per gli input slider (quello della probabilità)*/
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--bg-light);
+    border-radius: 2px;
+    outline: none; /* toglie dal browser un bordo*/
+    margin: 10px 0;
+}
+
+.input-group input[type="range"]::-webkit-slider-thumb { /*modifica il pallino dello slider*/
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--red-color);
+    border-radius: 50%;
+    cursor: pointer; /*aggiunge mano quando si passa sul pallino per far capire che si sposta*/
+    box-shadow: var(--vintage-shadow); /*ombra attorno al pallino anche se non si nota molto*/
+}
+.glow-button.active {
+    background-color: #ffe66d;
+    color: #2d3436;
+    border-color: #ffe66d;
+    font-weight: bold;
+}
+
+.glow-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #636e72;
+    border-color: #636e72;
+    color: #b2bec3;
+}
+
+node.highlight {
+  background-color: #ff6b6b;
+  border-color: #ff6b6b;
+  border-width: 2;
+}
+  
+
+
+/* Properties Panel */
+.properties-panel {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #2f3640;
+    border: 1px solid #4ecdc4;
+    border-radius: 8px;
+    padding: 15px;
+    width: 250px;
+    color: #f5f6fa;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.properties-panel h3 { /*stile per il titolo della finestra*/
+    margin-top: 0;
+    color: #4ecdc4;
+    border-bottom: 1px solid #4ecdc4;
+    padding-bottom: 10px;
+}
+
+.properties-panel .input-group { /*separa i blocchi di input nella finestra*/
+    margin-bottom: 15px;
+}
+
+.properties-panel label {
+    display: block; /*label va a capo*/
+    margin-bottom: 5px;
+    color: #f5f6fa;
+}
+
+.properties-panel input[type="text"],
+.properties-panel input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    background-color: #353b48;
+    border: 1px solid #4ecdc4;
+    border-radius: 4px;
+    color: var(--text-color);
+}
+
+/*
+.switch: Contenitore dell'interruttore. contiene lo span "slider"  e la checkbox (input type)
+.slider: Lo "sfondo" dell'interruttore.
+.slider:before: La "manopola" che si sposta.
+input:checked + .slider: Cambia colore quando attivo. + seleziona il primo elemento slider dopo l'input checked
+input:checked + .slider:before: Sposta la manopola a destra. + seleziona la prima "manopola" dopo l'input
+.switch-label: testo accanto all'interruttore.
+*/
+
+.switch-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.switch input {
+    opacity: 0; /*nascondo il vero interruttore dell'html*/
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #353b48;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before { /*aggiunge piccolo cerchio chiaro dentro lo slider (non esiste nel html, lo creo così con before)*/
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #f5f6fa;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider { /*cambio il colore del primo slider che segue input quando è selezionato*/
+    background-color: #4ecdc4;
+}
+
+input:checked + .slider:before { /*sposta manopola a destra*/
+    transform: translateX(26px);
+}
+
+.switch-label {
+    color: #f5f6fa;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.properties-panel .glow-button {
+    background-color: #4ecdc4;
+    color: #2f3640;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+/* Solo per lo switch nella random-graph */
+.random-graph .switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* sposta a sinistra */
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+
+/* Etichette a sinistra e destra dello switch */
+.random-graph .switch-text {
+    color: #f5f6fa;
+    font-size: 14px;
+}
+
+
+.properties-panel .glow-button:hover {
+    background-color: #45b7af;
+    box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+}  
+
+
+.properties-panel .remove-button {
+    background: var(--red-color);
+    border:none;
+    color: var(--bg-dark);
+    padding: 8px 15px;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease; /*cambio colore fluido quando passi sul bottone*/
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+}
+
+.properties-panel .remove-button:hover {
+    background: var(--red-color); /*inverte i colori quando si passa sopra col mouse*/
+    color: var(--bg-dark);
+    box-shadow: 0 0 10px red;
+    transform: translateY(-2px); /*si solleva leggermente quando si passa sopra*/
+}
+
+/* User Menu */
+.user-menu-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.user-icon {
+    width: 45px;
+    height: 45px;
+    background-color: var(--bg-dark);
+    border: 2px solid var(--red-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--vintage-shadow);
+}
+
+.user-icon .hidden{
+    display:none !important;
+}
+
+.user-icon:hover {
+    background-color: var(--red-color);
+    transform: scale(1.1);
+}
+
+.user-icon svg {
+    color: var(--red-color);
+    transition: all 0.3s ease;
+}
+
+.user-icon:hover svg {
+    color: var(--bg-dark);
+}
+
+.user-icon.logged-in {
+    background-color: var(--blue-color);
+    border-color: var(--red-color);
+}
+
+.user-icon.logged-in svg {
+    color: var(--bg-dark);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: var(--bg-dark);
+    border: 2px solid var(--red-color);
+    border-radius: 8px;
+    padding: 15px 0;
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--vintage-shadow);
+}
+
+.dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    padding: 12px 25px;
+    color: var(--red-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.dropdown-item:hover {
+    background-color: var(--red-color);
+    color: var(--bg-dark);
+    transform: scale(1.02);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--bg-dark);
+    border: 2px solid var(--red-color);
+    border-radius: 5px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: var(--vintage-shadow);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--red-color);
+    padding-bottom: 10px;
+}
+
+.modal-header h2 {
+    color: var(--red-color);
+    text-shadow: var(--vintage-shadow);
+}
+
+.close-modal {
+    color: var(--red-color);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    transform: scale(1.2);
+}
+
+.modal-body {
+    margin-top: 20px;
+}
+
+.modal-body .input-group {
+    margin-bottom: 15px;
+}
+
+.modal-body .input-group input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.modal-body button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Saved Graphs */
+.saved-graphs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.graphs-list {
+    margin-top: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+        /* Nascondi scrollbar ma mantieni lo scroll */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE e Edge */
+    }
+.graphs-list::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+}
+
+.graph-item {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--blue-color);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.graph-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.graph-name {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.graph-date {
+    color: var(--blue-color);
+    font-size: 0.9rem;
+}
+
+.graph-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.graph-actions button {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--red-color);
+    color: var(--red-color);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.graph-actions button:hover {
+    background-color: var(--red-color);
+    color: var(--bg-dark);
+}
+
+.graph-actions .delete-graph {
+    border-color: var(--yellow-color);
+    color: var(--yellow-color);
+}
+
+.graph-actions .delete-graph:hover {
+    background-color: var(--yellow-color);
+    color: var(--bg-dark);
+}
+
+/* Menu Button - su desktop è nascosto di default */
+.menu-button {
+    display: none;
+}
+
+/* Mobile Title - su desktop è nascosto di default */
+.mobile-title {
+    display: none;
+}
+
+/* Welcome Modal */
+.welcome-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-modal.active {
+    display: flex;
+}
+
+.welcome-content {
+    background: var(--bg-dark);
+    border: 3px solid var(--red-color);
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    box-shadow: var(--vintage-shadow);
+}
+
+.welcome-content h2 {
+    color: var(--red-color);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: var(--vintage-shadow);
+}
+
+.welcome-content p {
+    color: var(--text-color);
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.welcome-content .feature-list {
+    list-style: none;
+    margin: 1rem 0;
+    padding: 0;
+}
+
+.welcome-content .feature-list li {
+    color: var(--blue-color);
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.welcome-content .feature-list li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--yellow-color);
+}
+
+.welcome-content .start-button {
+    background: var(--red-color);
+    color: var(--bg-dark);
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+    font-family: 'VT323', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.welcome-content .start-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--vintage-shadow);
+}
