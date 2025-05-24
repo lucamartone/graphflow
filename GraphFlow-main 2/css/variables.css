@@ -1,0 +1,10 @@
+:root {
+    --red-color: #ff6b6b;
+    --blue-color: #4ecdc4;
+    --yellow-color: #ffe66d;
+    --bg-dark: #2d3436;
+    --bg-light: #636e72;
+    --text-color: #f5f6fa;
+    --vintage-glow: 0 0 5px rgba(255, 107, 107, 0.5);
+    --vintage-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}

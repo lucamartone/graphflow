@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'VT323', monospace;
+    background-color: var(--bg-dark);
+    color: var(--text-color);
+    min-height: 100vh;
+    overflow: hidden;
+}
